@@ -1,0 +1,10 @@
+{
+    "name": "真快乐助手",
+    "main": "main.js",
+    "ignore": [
+        "build"
+    ],
+    "packageName": "com.selier",
+    "versionName": "1.5.5",
+    "versionCode": 1
+}
