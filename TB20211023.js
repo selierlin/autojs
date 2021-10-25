@@ -175,8 +175,8 @@ function listenText(text) {
 }
 
 function clickSugar() {
-    if (textContains("点击赢红包").exists()) {
-        sugar = textContains("点击赢红包").findOnce();
+    if (textContains("骰子").exists()) {
+        sugar = textContains("骰子").findOnce();
         sugarCount = sugar.text().split("，")[1];
         console.info("当前共有" + sugarCount + "个骰子");
         if (sugarCount && sugarCount > 0) {

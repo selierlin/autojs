@@ -6,6 +6,7 @@ console.log(tasks[2].text());
 if (tasks) {
     for (let i = 0; i < tasks.size(); i++) {
         let task = tasks[i];
+        task.parent()
         let taskName = task.text();
         if (taskName.indexOf("邀请好友") > -1) {
             continue;
@@ -16,12 +17,11 @@ if (tasks) {
             continue;
         }
         for (let i = 0; i < taskTextArr[1] - taskTextArr[0]; i++) {
-            console.log(taskName);
+            let taskTag = task.parent().child(2).text();
+            console.log(taskTag);
             task.parent().child(3).click();
-            sleep(1000);
+            sleep(5000);
             if (taskName.indexOf("城城分") > -1) {
-                text("关闭").findOnce().click();
-                sleep(1000);
                 // 关闭弹出的窗口
                 textContains("红包").findOnce().parent().child(0).click();
                 sleep(1000);
@@ -29,21 +29,11 @@ if (tasks) {
                 sleep(1000);
                 back();
                 sleep(1000);
-            } else if (taskName.indexOf("城城分") > -1) {
-                text("关闭").findOnce().click();
-                sleep(1000);
-                // 关闭弹出的窗口
-                textContains("红包").findOnce().parent().child(0).click();
-                sleep(1000);
-                text("624393fabf2293cb").findOnce().click();
-                sleep(1000);
-                back();
-                sleep(1000);
-            } else {
+            }else {
                 doTimeTask();
             }
             back();
-            sleep(2000);
+            sleep(3000);
         }
     }
 }
