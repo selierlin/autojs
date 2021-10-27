@@ -1,9 +1,1 @@
-let goods = textMatches(/¥\d+\.\d+/).findOnce().parent().parent().children();
-if (goods) {
-    for (let i = 0; i < 5; i++) {
-        goods[i].child(5).click();
-        sleep(2000);
-        back();
-        sleep(2000);
-    }
-}
+textContains("汪汪币").findOnce().parent().parent().child(2).child(4).click()

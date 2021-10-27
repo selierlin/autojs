@@ -8,21 +8,124 @@ while (textContains("打卡领红包").findOnce() == null) {
     sleep(6000);
 }
 console.show();//开启悬浮窗
-if(textContains("打卡领红包").exists()){
+if (textContains("打卡领红包").exists()) {
     console.info("成功进入活动界面");
-    click(938,1555)
+    click(938, 1555)
+}
+
+let flag = true;
+while (flag) {
+    // 查找任务列表下所有任务
+    console.log("获取任务列表");
     sleep(3000);
+    let tasks = textMatches(/.*?\(.*?\)/).find();
+    let taskArr = [];
+    if (tasks) {
+        for (let i = 0; i < tasks.size(); i++) {
+            // 当前任务对象
+            let task = tasks[i];
+            // 任务名称
+            let taskName = task.text();
+            // 任务标签
+            let taskTag = task.parent().child(2).text();
+            // 排除任务
+            if (taskName.indexOf("邀请好友") > -1 || taskName.indexOf("小程序") > -1 || taskTag.indexOf("小程序") > -1) {
+                continue;
+            }
+            // 完成任务数
+            let completeCount = taskName[taskName.indexOf("(") + 1];
+            // 总任务数
+            let allCount = taskName.substring(taskName.indexOf("/") + 1, taskName.length - 1);
+            if (allCount - completeCount > 0) {
+                console.log("任务：" + taskName + "，" + taskTag + "，" + completeCount + "，" + allCount);
+                taskArr.push(task);
+            }
+        }
+        if (taskArr && taskArr.length > 0) {
+            for (let i = 0; i < taskArr.length; i++) {
+                let task = taskArr[i];
+                // 任务名称
+                let taskName = task.text();
+                // 任务标签
+                let taskTag = task.parent().child(2).text();
+                // 完成任务数
+                let completeCount = taskName[taskName.indexOf("(") + 1];
+                // 总任务数
+                let allCount = taskName.substring(taskName.indexOf("/") + 1, taskName.length - 1);
+                if (completeCount >= allCount) {
+                    // 任务已经完成，返回
+                    continue;
+                }
+                console.log(taskName);
+                // 进入任务
+                task.parent().child(3).click();
+
+                // 任务逻辑处理
+                if (taskName.indexOf("城城分") > -1) {
+                    sleep(5000);
+                    // 关闭弹出的窗口
+                    textContains("红包").findOnce().parent().child(0).click();
+                    sleep(1000);
+                    text("624393fabf2293cb").findOnce().click();
+                    sleep(1000);
+                    back();
+                    sleep(1000);
+                } else if (taskName.indexOf("去浏览") > -1 || taskName.indexOf("加购") > -1) {
+                    sleep(5000);
+                    // 获取页面上所有的商品
+                    let goods = textMatches(/¥\d+\.\d+/).findOnce().parent().parent().children();
+                    if (goods) {
+                        // 只遍历5次
+                        for (let i = 0; i < 5; i++) {
+                            // 可能有6的情况
+                            // goods[i].child(6).click();
+                            goods[i].child(5).click();
+                            sleep(2000);
+                            back();
+                            sleep(2000);
+                        }
+                    }
+                } else if (taskTag.indexOf("8s") > -1) {
+                    doTimeTask();
+                } else if (taskName.indexOf("首页") > -1) {
+                    // TODO
+                    sleep(3000);
+                    for (let i = 0; i < 5; i++) {
+                        click(400, 748);
+                        back();
+                        sleep(2000);
+                    }
+                   
+                    continue;
+                } else if (taskName.indexOf("去种草城") > -1) {
+                    sleep(5000);
+                    if (textContains("汪汪币").exists()) {
+                        // 只遍历5次
+                        for (let i = 0; i < 5; i++) {
+                            textContains("汪汪币").findOnce().parent().parent().child(2).child(4).click();
+                            sleep(2000);
+                            back();
+                            sleep(2000);
+                        }
+                    }
+                } else if (taskTag.indexOf("浏览可得") > -1 || taskTag.indexOf("浏览并关注") > -1) {
+                    sleep(5000);
+                } else {
+                    flag = false;
+                }
+                back();
+                sleep(3000);
+            }
+        } else {
+            flag = false;
+        }
+    } else {
+        flag = false;
+    }
+
 }
-while(textContains("8s").exists()){
-    taskName = textContains("8s").findOnce();
-    console.log(taskName.text());
-    taskName.parent().child(3).click();
-    sleep(1000);
-    
-    doTimeTask();
-    back();
-    sleep(2000);
-}
+
+
 
 console.log("所有任务已完成，若有剩余可再启动一次脚本或手动完成");
 console.log("结束任务");
@@ -38,7 +141,7 @@ function doTimeTask() {
     let flag = listenText("浏览.*?汪汪币");
     if (flag) {
         console.log("任务倒计时中...")
-        sleep(9000);
+        sleep(10000);
         console.info("完成任务")
     } else {
         console.warn("未找到任务倒计时，返回任务");
