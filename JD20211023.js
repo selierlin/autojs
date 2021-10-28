@@ -3,12 +3,12 @@
 //author：Selier
 auto.waitFor();//无障碍服务检测
 setScreenMetrics(1080, 2340);//声明是基于分辨率 1080,2340 的点击
-while (textContains("打卡领红包").findOnce() == null) {
+while (textContains("汪汪币").findOnce() == null) {
     toast("请手动进入活动页面");
     sleep(6000);
 }
 console.show();//开启悬浮窗
-if (textContains("打卡领红包").exists()) {
+if (textContains("汪汪币").exists()) {
     console.info("成功进入活动界面");
     click(938, 1555)
 }
