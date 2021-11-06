@@ -19,7 +19,6 @@ while (flag) {
     sleep(2000);
     let tasks = textMatches(/.*?\(.*?\)/).find();
     let taskArr = [];
-    console.log('查找任务列表');
     if (tasks && tasks[0]) {
         for (let i = 0; i < tasks.size(); i++) {
             flag = false;
@@ -42,28 +41,14 @@ while (flag) {
             }
             flag = true;
             // console.log("任务：" + taskName + "，" + taskTag + "，" + completeCount + "，" + allCount);
-            console.log(taskName);
+            console.log(taskName + "，" + taskTag);
             // 进入任务
             task.parent().child(3).click();
 
             // 任务逻辑处理
             if (taskName.indexOf("城城分") > -1) {
                 sleep(5000);
-                // 关闭弹出的窗口
-                if (textContains("红包").exists()) {
-                    textContains("红包").findOnce().parent().child(0).click();
-                } else if (textContains("邀请").exists()) {
-                    textContains("邀请新朋友").findOnce().parent().child(2).click();
-                } else {
-                    back();
-                    sleep(3000);
-                    continue;
-                }
-
-                sleep(1000);
-                text("624393fabf2293cb").findOnce().click();
-                sleep(1000);
-                back();
+                text("e300dc37709c6f82").findOnce().click();
                 sleep(1000);
             } else if (taskName.indexOf("去浏览") > -1 || taskName.indexOf("加购") > -1) {
                 sleep(5000);
@@ -96,6 +81,8 @@ while (flag) {
                 sleep(2000);
                 click(1000, 1627);
                 sleep(2000);
+                click(938, 1555)
+                sleep(2000);
                 break;
             } else if (taskName.indexOf("去种草城") > -1) {
                 if (textContains("汪汪币").exists()) {
@@ -121,8 +108,8 @@ while (flag) {
             } else {
                 flag = false;
             }
-            console.info("完成任务");
             back();
+            console.info("完成任务");
             break;
         }
     } else {
