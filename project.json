@@ -1,0 +1,10 @@
+{
+    "name": "AUTOJS",
+    "main": "main.js",
+    "ignore": [
+        "build"
+    ],
+    "packageName": "com.selier",
+    "versionName": "1.0",
+    "versionCode": 1
+}

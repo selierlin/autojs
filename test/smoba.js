@@ -1,8 +1,11 @@
+var unlockScreen = require('unlockScreen.js')
+
 // 王者营地
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
     exit()
 }
+unlockScreen.unlockIfNeed()
 console.show()
 openApp()
 view()
@@ -10,7 +13,7 @@ viewRecord();
 openMyTask();
 sign();
 getInterval();
-log("任务完成✅")
+log("✅任务完成")
 exit()
 
 
@@ -36,7 +39,7 @@ function view() {
     sleep(1000)
     var d = text("QQ好友").findOne().bounds();
     click(d.centerX(), d.centerY());
-    sleep(1000)
+    sleep(2000)
     log("分享给好友‘你’")
     var d = text("你").findOne().bounds();
     click(d.centerX(), d.centerY());
@@ -55,14 +58,14 @@ function view() {
 function viewRecord() {
     log("浏览战绩...")
     className("android.widget.RadioButton").text("战绩").findOne().click();
-    sleep(500)
+    sleep(2000)
     log("点击第一条")
     var a = className("android.view.View").depth(24).drawingOrder(2).indexInParent(1).findOne().bounds()
     click(a.centerX(), a.centerY());
-    sleep(2000)
+    sleep(4000)
     log("返回首页")
     back();
-    sleep(500)
+    sleep(1000)
 }
 
 
@@ -85,9 +88,6 @@ function sign() {
 
 function getInterval() {
     log("领取奖励")
-    click("更多")
-    sleep(1000)
-    log("领取中")
     click("一键领取")
     sleep(1000)
     log("领取完成")
