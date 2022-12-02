@@ -9,42 +9,61 @@ const maxSwipeNum = 50;
 const loopTime = getLoopTime();
 var myCfg = storages.create("DingDing-SayNo");
 
-var unlockScreen = {}
 /**
  * 获取完全日志
- * @returns 
+ * @returns {string} 日志
  */
-unlockScreen.myLog = function () {
+var getLog = function () {
     return myLog;
 };
+
 /**
  * 解锁屏幕
+ * @param {*} pwd - 密码
  */
-unlockScreen.unlockIfNeed = function () {
+var unlockIfNeed = function (pwd) {
     device.wakeUpIfNeeded();
-    if (!isLocked()) {
-        setLog("无解锁密码");
-        swipeUp();
-        setLog("解锁成功");
+    // 是否需要解锁手机
+    if (!hasUnlock()) {
+        setLog("已是解锁状态");
+        home()
         return;
     }
-    swipeUp();
-    sleep(1000);
-    if (pwd) {
-        enterPwd();
+    if (!isLock()) {
+        setLog("未设置解锁密码 直接上滑");
+        swipeUp();
+        setLog("解锁成功");
     } else {
-        setLog("请配置手机解锁密码");
-        exitShell();
+        setLog("有解锁密码");
+        swipeUp();
+        sleep(1000);
+        if (pwd) {
+            enterPwd(pwd);
+        } else {
+            setLog("请配置手机解锁密码");
+            exit();
+        }
+        setLog("解锁完毕");
     }
-    setLog("解锁完毕");
+    home()
 }
 
+/**
+ * 手机是否需要解锁
+ */
+function hasUnlock() {
+    var km = context.getSystemService(Context.KEYGUARD_SERVICE);
+    // 是否处于限制输入模式  true:不响应home键和右软件 false:功能正常
+    return km.inKeyguardRestrictedInputMode();
+}
 
 /**
- * 手机是否锁屏
+ * 手机是否锁屏(不管是否有密码)
  */
-function isLocked() {
+function isLock() {
     var km = context.getSystemService(Context.KEYGUARD_SERVICE);
+    // 返回点前是否处于锁屏的状态 true:锁屏 false:已解锁
+    // 是否设置了锁屏密码 true:有锁屏密码（包含SIM卡锁） false:未设置
     return km.isKeyguardLocked() && km.isKeyguardSecure();
 }
 
@@ -61,14 +80,13 @@ function swipeUp() {
             return;
         }
     }
-
     if (swipeUpMethodOne()) {
         log("方式一上滑成功");
     } else if (swipeUpMethodTwo()) {
         log("方式二上滑成功");
     } else {
         setLog("当前程序无法上滑至桌面或密码输入界面");
-        exitShell();
+        exit();
     }
 }
 
@@ -136,8 +154,9 @@ function swipeUpSuc() {
 
 /**
  * 输入手机解锁密码
+ * @param {*} pwd - 密码
  */
-function enterPwd() {
+function enterPwd(pwd) {
     //点击
     if (text(0).clickable(true).exists()) {
         for (var i = 0; i < pwd.length; i++) {
@@ -166,7 +185,7 @@ function getLoopTime() {
 
 /**
  * 保存日志
- * @param {*} msg 
+ * @param {*} msg - 日志
  */
 function setLog(msg) {
     log(msg);
@@ -174,4 +193,5 @@ function setLog(msg) {
     myLog += msg;
 }
 
-module.exports = unlockScreen;
+module.exports.unlockIfNeed = unlockIfNeed;
+module.exports.getLog = getLog;

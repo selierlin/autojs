@@ -1,4 +1,4 @@
-var unlockScreen = require('unlockScreen.js')
+var unlockScreen = require('./unlockScreen.js')
 
 // 王者营地
 if (!auto.service) {

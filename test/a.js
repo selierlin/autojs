@@ -1,4 +1,3 @@
-var unlockScreen = require('unlockScreen.js')
-unlockScreen.unlockIfNeed()
-log("-----")
-log(unlockScreen.myLog())
+var common = require('./common.js')
+common.killApp("com.ccb.longjiLife")
+exit()
