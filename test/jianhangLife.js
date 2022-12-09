@@ -7,9 +7,14 @@ var APP = 'com.ccb.longjiLife'
 var NAME = '建行生活'
 var LEFT = 300;
 var RIGHT = 788;
+var hasTwo = 0;// 是否有两个分身
+
 // 建行生活
 doLife1()
-doLife2()
+if (hasTwo) {
+    doLife2()
+}
+
 function doLife1() {
     openApp(LEFT)
     let a = sign()
@@ -17,7 +22,8 @@ function doLife1() {
         lottery()
     }
     home()
-    common.killApp(NAME, 1000)
+    sleep(1000)
+    common.killApp(NAME)
 }
 
 function doLife2() {
@@ -36,8 +42,20 @@ function doLife2() {
 function openApp(a) {
     log("正在打开...");
     app.launch(APP)
-    sleep(3000)
-    click(a, 1930)
+    let cancel = text("取消").findOne(2000)
+    if (cancel) {
+        hasTwo = 1;
+        log("找到两个app,准备循环执行")
+        if (a == LEFT) {
+            let aa = text(NAME).boundsInside(0, device.height / 2, device.width / 2, device.height).findOne()// 获取左边的
+            log("打开左边的app")
+            click(aa.bounds().centerX(), aa.bounds().centerY());
+        } else {
+            let aa = text(NAME).boundsInside(device.width / 2, device.height / 2, device.width, device.height).findOne()// 获取右边的
+            log("打开右边的app")
+            click(aa.bounds().centerX(), aa.bounds().centerY());
+        }
+    }
     log("等待8秒,待app完全启动")
     sleep(8000)
 }
@@ -55,12 +73,12 @@ function sign() {
     } else {
         member.parent().child(19).click()
         sleep(1000);
-        let a = text("立即签到").findOne(3000)
+        let a = text("立即签到").findOne(6000)
         if (a) {
             a.click()
             log("签到完成")
         } else {
-            log("不可签到")
+            log("今日已经签到")
         }
         sleep(500)
     }

@@ -20,6 +20,7 @@ exit()
 function openApp() {
     log("正在打开王者营地...");
     app.launch("com.tencent.gamehelper.smoba")
+    log("等待10秒程序完全启动")
     sleep(10000)
 }
 
