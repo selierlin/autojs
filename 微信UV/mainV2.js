@@ -41,7 +41,6 @@ tipText += "\n\noppo手机：设置-其它设置-无障碍-真快乐助手-[开�
 tipText += "";
 ui.tip.setText(tipText);
 // auto.waitFor();
-
 // 启动
 function start() {
     var count = dialogs.input("请输入需要执行的次数", "10");
@@ -49,13 +48,14 @@ function start() {
     backTime = ui.backTime.getText();
     clickTime = ui.clickTime.getText();
     if (launchPackage("com.tencent.mm")) {
-        toast("启动微信中，请等待5秒");
+        console.show()
+        log("启动微信中，请等待5秒");
         sleep(5000);
-        toast("准备执行次数：" + count);
+        log("准备执行次数：" + count);
         for (let i = 0; i < count; i++) {
-            toast("正在执行次数：" + (i + 1));
+            log("正在执行次数：" + (i + 1));
             sleep(clickTime);
-            // 点击第一个聊天用户
+            log("点击第一个聊天用户")
             click(540, 323);
             sleep(clickTime);
             // 点击最下面的分享链接

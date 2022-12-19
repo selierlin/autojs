@@ -1,5 +1,6 @@
 var unlockScreen = require('./unlockScreen.js')
 var common = require('./common.js')
+var notify = require('./notify.js')
 unlockScreen.unlockIfNeed()
 sleep(2000)
 
@@ -66,6 +67,7 @@ function sign() {
     log("搜索会员有礼:" + member)
     if (!member) {
         log("未找到会员有礼")
+        notify.sendPushPlus("第" + (hasTwo + 1) + "个账号 未找到会员有礼")
         log("返回")
         back()
         sleep(1000)
@@ -77,8 +79,10 @@ function sign() {
         if (a) {
             a.click()
             log("签到完成")
+            notify.sendPushPlus("第" + (hasTwo == 1) + "个账号 签到完成")
         } else {
             log("今日已经签到")
+            notify.sendPushPlus("第" + (hasTwo + 1) + "个账号 今日已经签到")
         }
         sleep(500)
     }
