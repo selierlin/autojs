@@ -1,21 +1,27 @@
 var common = require('./common.js')
 var unlockScreen = require('./unlockScreen.js')
-
+var notify = require('./notify.js')
 // 王者营地
 if (!auto.service) {
     toast('无障碍服务未启动！退出！')
     exit()
 }
-unlockScreen.unlockIfNeed()
-console.show()
-openApp()
-view()
-viewRecord();
-openMyTask();
-sign();
-getInterval();
-log("✅任务完成")
-exit()
+try {
+    unlockScreen.unlockIfNeed()
+    console.show()
+    openApp()
+    view()
+    viewRecord();
+    openMyTask();
+    sign();
+    getInterval();
+    log("✅任务完成")
+    notify.sendPushPlus("王者营地任务完成✅")
+} catch (e) {
+    notify.sendPushPlus("王者营地任务失败❌")
+} finally {
+    exit()
+}
 
 
 function openApp() {

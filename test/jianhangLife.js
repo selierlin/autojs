@@ -11,9 +11,10 @@ var RIGHT = 788;
 // 建行生活
 // doLife("1760", LEFT)
 doLife("159", RIGHT)
+
 function doLife(name, index) {
     openApp(index)
-    let a = sign()
+    let a = sign(name)
     log("[%d]签到结果：%d", name, a)
     if (a) {
         // lottery()
@@ -32,7 +33,7 @@ function openApp(index) {
     sleep(8000)
 }
 
-function sign() {
+function sign(name) {
     // 判断是否有弹窗
     let ad = className("android.widget.Image").depth(16).drawingOrder(0).indexInParent(0).clickable(true).findOne(3000)
     if (ad) {
@@ -44,7 +45,7 @@ function sign() {
     log("搜索会员有礼")
     if (!member) {
         log("未找到会员有礼")
-        notify.sendPushPlus("第" + (hasTwo + 1) + "个账号 未找到会员有礼")
+        notify.sendPushPlus("账号[" + name + "] 未找到会员有礼")
         log("返回")
         back()
         sleep(1000)
@@ -55,6 +56,7 @@ function sign() {
         if (a) {
             a.click()
             log("签到完成")
+            notify.sendPushPlus("账号[" + name + "] 签到完成✅")
             sleep(500)
             log("返回")
             back()
@@ -99,6 +101,7 @@ function getChangeCount() {
     log(change)
     return change.substring(4, 5);
 }
+
 function getLotteryResult() {
     return text("我知道了").findOne().parent().parent().child(0).text();
 }
