@@ -1,3 +1,4 @@
+var common = require('./common.js')
 var unlockScreen = require('./unlockScreen.js')
 
 // 王者营地
@@ -20,17 +21,32 @@ exit()
 function openApp() {
     log("正在打开王者营地...");
     app.launch("com.tencent.gamehelper.smoba")
+    log("等待10秒,待app完全启动")
     sleep(10000)
 }
 
 function view() {
+    let a = text("官方").findOne(3000)
+    if (a) {
+        let layout = a.parent().parent().parent().parent();
+        log("向右➡️滑动")
+        layout.parent().parent().scrollRight()
+        sleep(1000)
+        log("打开世界")
+        console.hide()
+        let world = layout.child(7).bounds()
+        click(world.centerX(), world.centerY())
+        sleep(2000)
+        console.show()
+    }
+
     log("浏览资讯中")
-    className("android.widget.RadioButton").text("资讯").findOne().click();
-    sleep(500);
-    className("android.view.ViewGroup").depth(26).drawingOrder(12).indexInParent(10).clickable(true).findOne().click()
+    className("android.view.ViewGroup").clickable(true).depth(17).drawingOrder(2).indexInParent(1).findOne().click();
     sleep(2000)
     log("点赞")
     var c = id("img_like").findOne().bounds()
+    click(c.centerX(), c.centerY());
+    sleep(1000)
     click(c.centerX(), c.centerY());
     sleep(1000)
     log("分享给QQ好友")
@@ -60,7 +76,7 @@ function viewRecord() {
     className("android.widget.RadioButton").text("战绩").findOne().click();
     sleep(2000)
     log("点击第一条")
-    var a = className("android.view.View").depth(24).drawingOrder(2).indexInParent(1).findOne().bounds()
+    var a = className("android.view.View").depth(24).drawingOrder(2).indexInParent(1).boundsInside(0, device.height / 2, device.width, device.height).findOne(1000).bounds()
     click(a.centerX(), a.centerY());
     sleep(4000)
     log("返回首页")

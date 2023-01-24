@@ -8,67 +8,61 @@ var NAME = '建行生活'
 var LEFT = 300;
 var RIGHT = 788;
 // 建行生活
-doLife1()
-doLife2()
-function doLife1() {
-    openApp(LEFT)
+// doLife("1760", LEFT)
+doLife("159", RIGHT)
+function doLife(name, index) {
+    openApp(index)
     let a = sign()
+    log("[%d]签到结果：%d", name, a)
     if (a) {
-        lottery()
-    }
-    home()
-    common.killApp(NAME, 1000)
-}
-
-function doLife2() {
-    openApp(RIGHT)
-    let a = sign()
-    if (a) {
-        lottery()
+        // lottery()
     }
     home()
     sleep(1000)
     common.killApp(NAME)
 }
 
-
-
-function openApp(a) {
+function openApp(index) {
     log("正在打开...");
     app.launch(APP)
     sleep(3000)
-    click(a, 1930)
+    click(index, 1930)
     log("等待8秒,待app完全启动")
     sleep(8000)
 }
 
 function sign() {
+    // 判断是否有弹窗
+    let ad = className("android.widget.Image").depth(16).drawingOrder(0).indexInParent(0).clickable(true).findOne(3000)
+    if (ad) {
+        log("关闭弹窗")
+        ad.click();
+    }
     log("进入签到")
     let member = text("会员有礼").findOne(3000)
-    log("搜索会员有礼:" + member)
+    log("搜索会员有礼")
     if (!member) {
         log("未找到会员有礼")
         log("返回")
         back()
         sleep(1000)
-        return false;
     } else {
-        member.parent().child(19).click()
+        member.parent().child(20).click()
         sleep(1000);
         let a = text("立即签到").findOne(3000)
         if (a) {
             a.click()
             log("签到完成")
+            sleep(500)
+            log("返回")
+            back()
+            sleep(1000)
+            return true;
         } else {
-            log("不可签到")
+            log("找不到签到按钮，不可签到")
         }
-        sleep(500)
     }
-
-    log("返回")
-    back()
-    sleep(1000)
-    return true;
+    return false;
 }
 
 
