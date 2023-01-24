@@ -1,7 +1,7 @@
 "ui";
 // author:selier
 // create:2021年9月19日12:00:00
-// update:2023年1月24日13:40:00
+// update:2023年1月24日15:00:00
 // version:2.0
 
 var count = 20; // 需要执行多少次
@@ -67,7 +67,10 @@ function start() {
     yesTime = ui.yesTime.getText();
     backTime = ui.backTime.getText();
     clickTime = ui.clickTime.getText();
+    console.setSize(device.width / 2, device.height / 2)
+    console.setPosition(device.width / 3, device.height / 2)
     console.show()
+
     log("启动微信中，请等待5秒");
     sleep(5000);
     log("总共需要执行 %d 次", count);
@@ -101,7 +104,9 @@ function openFriend() {
     if (!friend) {
         throw "未找到好友"
     }
-    friend.click();
+    // friend.click();
+    let friendB = friend.bounds();
+    click(friendB.centerX(), friendB.centerY())
     sleep(clickTime);
 }
 
@@ -152,7 +157,6 @@ function delRecAppV2() {
     log("删除小程序 " + appName)
     let a = textMatches("(" + appName + ").*?").findOne(3000)
     if (a) {
-        console.hide()
         let temp = a.bounds()
 
         var x = temp.centerX();
@@ -166,7 +170,6 @@ function delRecAppV2() {
         }
         points.push([x, 2188]);
         gesture.apply(null, points);
-        console.show()
         sleep(backTime)
     } else {
         throw "没有找到【" + appName + "】"
