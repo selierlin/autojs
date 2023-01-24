@@ -1,8 +1,7 @@
 "ui";
 // author:selier
 // create:2021年9月19日12:00:00
-// update:2022年12月11日14:46:00
-// version:2.0
+// version:1.0
 
 var count = 20; // 需要执行多少次
 //设置在特定屏幕分辨率下要点击的坐标值(x,y)
@@ -41,6 +40,7 @@ tipText += "\n\noppo手机：设置-其它设置-无障碍-真快乐助手-[开�
 tipText += "";
 ui.tip.setText(tipText);
 // auto.waitFor();
+
 // 启动
 function start() {
     var count = dialogs.input("请输入需要执行的次数", "10");
@@ -48,14 +48,13 @@ function start() {
     backTime = ui.backTime.getText();
     clickTime = ui.clickTime.getText();
     if (launchPackage("com.tencent.mm")) {
-        console.show()
-        log("启动微信中，请等待5秒");
+        toast("启动微信中，请等待5秒");
         sleep(5000);
-        log("准备执行次数：" + count);
+        toast("准备执行次数：" + count);
         for (let i = 0; i < count; i++) {
-            log("正在执行次数：" + (i + 1));
+            toast("正在执行次数：" + (i + 1));
             sleep(clickTime);
-            log("点击第一个聊天用户")
+            // 点击第一个聊天用户
             click(540, 323);
             sleep(clickTime);
             // 点击最下面的分享链接
