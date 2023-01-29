@@ -7,7 +7,7 @@ if (!auto.service) {
     exit()
 }
 try {
-    unlockScreen.unlockIfNeed()
+    unlockScreen.unlockIfNeed('1234')
     console.show()
     openApp()
     view()
@@ -18,6 +18,7 @@ try {
     log("✅任务完成")
     notify.sendPushPlus("王者营地任务完成✅")
 } catch (e) {
+    log(e)
     notify.sendPushPlus("王者营地任务失败❌")
 } finally {
     exit()
@@ -80,10 +81,21 @@ function view() {
 function viewRecord() {
     log("浏览战绩...")
     className("android.widget.RadioButton").text("战绩").findOne().click();
+    console.hide()
     sleep(2000)
     log("点击第一条")
     var a = className("android.view.View").depth(24).drawingOrder(2).indexInParent(1).boundsInside(0, device.height / 2, device.width, device.height).findOne(1000).bounds()
     click(a.centerX(), a.centerY());
+    sleep(2000)
+    log("滚动")
+    swipe(device.width / 2, device.height - 100, device.width / 2, device.height / 2, 300);
+    sleep(2000)
+    log("点击数据")
+    var data = text("数据").findOne(3000).bounds();
+    click(data.centerX(), data.centerY());
+    log("滚动")
+    swipe(device.width / 2, device.height - 100, device.width / 2, device.height / 2, 300);
+    console.show()
     sleep(4000)
     log("返回首页")
     back();

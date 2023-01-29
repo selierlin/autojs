@@ -36,7 +36,7 @@ var unlockIfNeed = function (pwd) {
     } else {
         setLog("有解锁密码");
         swipeUp();
-        sleep(1000);
+        
         if (pwd) {
             enterPwd(pwd);
         } else {
@@ -46,6 +46,7 @@ var unlockIfNeed = function (pwd) {
         setLog("解锁完毕");
     }
     home()
+    sleep(1000);
 }
 
 /**
