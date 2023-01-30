@@ -5,14 +5,14 @@ var notify = require('./notify.js')
 for (let i = 0; i < 1; i++) {
     try {
         let appName = "央视频" + (i + 1)
-        // openApp(appName)
-        // skipAd()
-        // openActivity()
-        // let myScore = getMyScore()
-        // let result = lottery(myScore)
-        // if (result == '获取更多积分') {
-        doTask(appName)
-        // }
+        openApp(appName)
+        skipAd()
+        openActivity()
+        let myScore = getMyScore()
+        let result = lottery(myScore)
+        if (result == '获取更多积分') {
+            doTask(appName)
+        }
         log("任务完成✅")
     } catch (err) {
         console.error(err)
@@ -58,16 +58,13 @@ function openActivity() {
 
 function getMyScore() {
     let score = textContains("我的积分").findOne(3000)
-    if (score) {
-        log(score.text())
-    }
     let myScore = score.text().split(":")[1]
     log("我的积分为：" + myScore)
     return myScore
 }
 
 function lottery(myScore) {
-    let btn = textContains("积分 /次").findOne(3000)
+    let btn = textMatches("(10积分 /次|今日剩余1次免费机会)").findOne(3000)
     if (btn) {
         log(btn.text())
         let temp = btn.parent().child(2).bounds()
@@ -75,11 +72,11 @@ function lottery(myScore) {
         log("抽奖中")
         let tip = className("android.widget.TextView").clickable(false).depth(18).drawingOrder(0).indexInParent(0).findOne(15000)
         if (tip) {
-            log(tip.text())
-            let btnText = tip.parent().child(1)
-            if (btnText.text().indexOf('获取更多积分') > -1) {
-                btnText.click()
-                return '获取更多积分'
+            let btnText = tip.parent().child(1).text()
+            log(btnText)
+            let btnResult = tip.parent().child(2)
+            if (btnResult.text().indexOf('获取更多积分') > -1) {
+                btnResult.click()
             } else {
                 log("关闭弹窗")
                 text("closeBtn").findOne(3000).click()
@@ -117,16 +114,16 @@ function viewVideo() {
 }
 function viewTv() {
     log("观看电视")
-let a = text("电视").findOne(3000)
-a.parent().click()
-let b = text("卫视").findOne(3000)
-b.parent().click()
-for (let i = 0; i < 3; i++) {
-    let tv = className("android.widget.LinearLayout").clickable(true).depth(14).indexInParent(i).findOne(2000)
-    tv.click()
-    sleep(3000)
-    
-}
+    let a = text("电视").findOne(3000)
+    a.parent().click()
+    let b = text("卫视").findOne(3000)
+    b.parent().click()
+    for (let i = 0; i < 3; i++) {
+        let tv = className("android.widget.LinearLayout").clickable(true).depth(14).indexInParent(i).findOne(2000)
+        tv.click()
+        sleep(3000)
+
+    }
 }
 function viewOnline() { }
 function concern() { }

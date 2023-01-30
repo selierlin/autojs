@@ -1,20 +1,12 @@
-// for (let i = 0; i < 3; i++) {
-//     let tv = className("android.widget.LinearLayout").clickable(true).depth(14).indexInParent(i).findOne(2000)
-//     log(tv)
-//     tv.click()
-//     sleep(3000)
-
-// }
-
-let tv = className("android.widget.LinearLayout").idContains('bottom').clickable(true).focusable(true).depth(14).drawingOrder(2).indexInParent(3).boundsInside(0, 0, device.width, device.height/2).findOne(2000)
-log(tv)
-if (tv) {
-    tv.click()
-
+let tip = className("android.widget.TextView").clickable(false).depth(18).drawingOrder(0).indexInParent(0).findOne(15000)
+if (tip) {
+    let btnText = tip.parent().child(1).text()
+    log(btnText)
+    let btnResult = tip.parent().child(2)
+    if (btnResult.text().indexOf('获取更多积分') > -1) {
+        btnResult.click()
+    } else {
+        log("关闭弹窗")
+        text("closeBtn").findOne(3000).click()
+    }
 }
-
-// let tv = className("androidx.recyclerview.widget.RecyclerView").idContains('board_bottom').clickable(false).focusable(true).depth(13).drawingOrder(3).indexInParent(2).findOne(2000)
-// log(tv)
-// if (tv) {
-
-// }
