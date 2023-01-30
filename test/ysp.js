@@ -2,12 +2,13 @@ var common = require('./common.js')
 var unlockScreen = require('./unlockScreen.js')
 var notify = require('./notify.js')
 
-for (let i = 0; i < 1; i++) {
+for (let i = 1; i < 2; i++) {
     try {
         let appName = "央视频" + (i + 1)
-        openApp(appName)
-        skipAd()
-        openActivity()
+        // openApp(appName)
+        // skipAd()
+        // viewVideo()
+        // openActivity()
         let myScore = getMyScore()
         let result = lottery(myScore)
         if (result == '获取更多积分') {
@@ -47,12 +48,16 @@ function skipAd() {
 
 function openActivity() {
     // let ac = textContains("五粮液").fondOne(5000)
+    let a = text("推荐").findOne().bounds()
+    click(a.centerX(), a.centerY())
+    sleep(1000)
     let ac = className("android.widget.FrameLayout").clickable(true).depth(10).drawingOrder(10).indexInParent(9).findOne(3000)
     if (!ac) {
         throw '未找到活动'
     }
     log("进入活动")
     ac.click()
+    sleep(1000)
 
 }
 
@@ -72,11 +77,11 @@ function lottery(myScore) {
         log("抽奖中")
         let tip = className("android.widget.TextView").clickable(false).depth(18).drawingOrder(0).indexInParent(0).findOne(15000)
         if (tip) {
-            let btnText = tip.parent().child(1).text()
-            log(btnText)
-            let btnResult = tip.parent().child(2)
-            if (btnResult.text().indexOf('获取更多积分') > -1) {
-                btnResult.click()
+            let tipBtn = tip.parent().child(1)
+            log(tipBtn)
+            let btnText = tipBtn.text()
+            if (btnText.indexOf('获取更多积分') > -1) {
+                click(tipBtn.bounds().centerX(), tipBtn.bounds().centerY())
             } else {
                 log("关闭弹窗")
                 text("closeBtn").findOne(3000).click()
@@ -88,9 +93,9 @@ function lottery(myScore) {
 function doTask(appName) {
     log(appName, ": 开始每日任务")
     // let taskList = getTaskList()
-    // sign()
-    viewVideo()
-    viewTv()
+    sign()
+    // viewVideo()
+    // viewTv()
     viewOnline()
     concern()
     likeVideo()
@@ -102,12 +107,19 @@ function getTaskList() {
         log(todo)
     }
 }
-function sign() { }
+function sign() {
+    let a = textContains("去完成").findOne(1000)
+    a.click()
+    sleep(5000)
+    back()
+}
 function viewVideo() {
     log("观看视频")
     let a = text("体育").findOne().bounds()
     click(a.centerX(), a.centerY())
+    sleep(1000)
     for (let i = 0; i < 3; i++) {
+        log("观看中")
         swipe(device.width / 2, device.height - 300, device.width / 2, device.height / 4, 300);
         sleep(13000)
     }
