@@ -161,15 +161,15 @@ function enterPwd(pwd) {
     //点击
     if (text(0).clickable(true).exists()) {
         for (var i = 0; i < pwd.length; i++) {
-            a = pwd.charAt(i)
+            like = pwd.charAt(i)
             sleep(200);
-            text(a).clickable(true).findOne().click()
+            text(like).clickable(true).findOne().click()
         }
     } else {
         for (var i = 0; i < pwd.length; i++) {
-            a = pwd.charAt(i)
+            like = pwd.charAt(i)
             sleep(200);
-            desc(a).clickable(true).findOne().click()
+            desc(like).clickable(true).findOne().click()
         }
     }
 }

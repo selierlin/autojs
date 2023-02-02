@@ -7,7 +7,7 @@ if (!auto.service) {
     exit()
 }
 try {
-    unlockScreen.unlockIfNeed('1234')
+    unlockScreen.unlockIfNeed()
     console.show()
     openApp()
     view()

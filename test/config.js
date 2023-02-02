@@ -1,8 +1,10 @@
 var config = {
+    // 手机解锁密码
+    password: "",
     // Push Plus Token
-    pushPlusToken: "137ca95cb88144e6bd3fae67c44b191d",
+    pushPlusToken: "",// "",
     // Push Plus Topic
-    pushPlusTopic: "tz",
+    pushPlusTopic: "",
     // 企业微信机器人
     QYWX_KEY: "",
 };
