@@ -35,14 +35,15 @@ function openApp(index) {
 
 function sign(name) {
     // 判断是否有弹窗
-    let ad = className("android.widget.Image").depth(16).drawingOrder(0).indexInParent(0).clickable(true).findOne(3000)
-    if (ad) {
-        log("关闭弹窗")
-        ad.click();
-    }
-    log("进入签到")
-    let member = text("会员有礼").findOne(3000)
+    // let ad = className("android.widget.Image").depth(16).drawingOrder(0).indexInParent(0).clickable(true).findOne(3000)
+    // if (ad) {
+    //     log("关闭弹窗")
+    //     ad.click();
+    //     sleep(1000)
+    // }
     log("搜索会员有礼")
+
+    let member = text("会员有礼").findOne(3000)
     if (!member) {
         log("未找到会员有礼")
         notify.sendPushPlus("账号[" + name + "] 未找到会员有礼")

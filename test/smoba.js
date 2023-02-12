@@ -41,8 +41,8 @@ function view() {
         sleep(1000)
         log("打开世界")
         console.hide()
-        let world = layout.child(7).bounds()
-        click(world.centerX(), world.centerY())
+        let world = text("世界").findOne(3000)
+        click(world.bounds().centerX(), world.bounds().centerY())
         sleep(2000)
         console.show()
     }
