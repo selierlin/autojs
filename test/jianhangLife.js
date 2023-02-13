@@ -1,27 +1,28 @@
 var unlockScreen = require('./unlockScreen.js')
 var common = require('./common.js')
 var notify = require('./notify.js')
-unlockScreen.unlockIfNeed()
-sleep(2000)
 
 var APP = 'com.ccb.longjiLife'
 var NAME = '建行生活'
 var LEFT = 300;
 var RIGHT = 788;
+var allMessage = '';
 // 建行生活
+// unlockScreen.unlockIfNeed()
+// sleep(2000)
 // doLife("1760", LEFT)
 doLife("159", RIGHT)
 
 function doLife(name, index) {
-    openApp(index)
-    let a = sign(name)
-    log("[%d]签到结果：%d", name, a)
-    if (a) {
-        // lottery()
+    try {
+        openApp(index)
+        let a = sign(name)
+        console.log(allMessage)
+        common.killApp(NAME)
+    } finally {
+        notify.sendQywx(allMessage)
     }
-    home()
-    sleep(1000)
-    common.killApp(NAME)
+
 }
 
 function openApp(index) {
@@ -45,29 +46,22 @@ function sign(name) {
 
     let member = text("会员有礼").findOne(3000)
     if (!member) {
-        log("未找到会员有礼")
-        notify.sendPushPlus("账号[" + name + "] 未找到会员有礼")
-        log("返回")
-        back()
-        sleep(1000)
+        allMessage += ("账号[" + name + "] 未找到会员有礼")
+        return;
     } else {
-        member.parent().child(20).click()
+        member.parent().child(member.indexInParent() + 3).click()
         sleep(1000);
         let a = text("立即签到").findOne(3000)
         if (a) {
             a.click()
             log("签到完成")
-            notify.sendPushPlus("账号[" + name + "] 签到完成✅")
-            sleep(500)
-            log("返回")
-            back()
-            sleep(1000)
+            allMessage += ("账号[" + name + "] 签到完成✅")
             return true;
         } else {
-            log("找不到签到按钮，不可签到")
+            allMessage += ("找不到签到按钮，不可签到")
+            return false;
         }
     }
-    return false;
 }
 
 

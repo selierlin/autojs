@@ -20,11 +20,12 @@ var NAME = '淘宝'
 
 try {
     console.show()
-    // unlockScreen.unlockIfNeed(config.password)
-    // openApp(APP)
-    // closeAd()
-    // openActivity()
-    // getTodayReward()
+    unlockScreen.unlockIfNeed(config.password)
+    common.startQuietModel()
+    openApp(APP)
+    closeAd()
+    openActivity()
+    getTodayReward()
     openTask()
     doTaskList()
     receiveReward()
@@ -34,6 +35,10 @@ try {
 } catch (ex) {
     log(ex)
 } finally {
+    console.hide()
+    common.killApp(NAME)
+    console.show()
+    common.exitQuietModel()
     // notify.autoSendMessage(NAME, allMessage)
     console.info("任务结束🔚")
 }
@@ -83,26 +88,13 @@ function openActivity() {
 
 function getTodayReward() {
     log("领取今日奖励")
-    // let a = className("android.view.View").clickable(true).depth(13).drawingOrder(0).findOne(findTime)
-    // if (a) {
-    //     a.click()
-    //     console.info("领取今日奖励完成")
-    //     sleep(findTime)
-    // } else {
-    //     let a = className("android.view.View").clickable(true).depth(14).drawingOrder(0).findOne(findTime)
-    //     if (a) {
-    //         a.click()
-    //         console.info("领取今日奖励完成")
-    //         sleep(findTime)
-    //     }
-    // }
     let a = text("今日签到").findOne(findTime)
     if (a) {
         a.parent().child(1).click()
         console.info("领取今日奖励完成")
-    }else{
+    } else {
         isSign = true;
-        log("领取今日奖励已完成")
+        log("已经领取过今日奖励")
     }
 }
 

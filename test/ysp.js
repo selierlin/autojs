@@ -16,6 +16,7 @@ var allMessage = "";
 try {
     console.show()
     unlockScreen.unlockIfNeed(config.password)
+    common.startQuietModel()
     for (let i = 0; i < 20; i++) {
         try {
             let appName = "央视频" + (i + 1)
@@ -39,6 +40,7 @@ try {
     }
 } finally {
     notify.autoSendMessage("央视频", allMessage)
+    common.exitQuietModel()
     console.info("任务结束🔚")
 }
 function openApp(appName) {
@@ -154,6 +156,7 @@ function doTask(appName) {
     sign()
     concern()
     back()
+    sleep(1000)
 }
 function getTaskList() {
     let todo = textContains("去完成").findOne(findTime)
@@ -238,6 +241,7 @@ function concern() {
         }
         log("返回")
         back()
+        sleep(1000)
     }
     console.info("关注完成")
 }

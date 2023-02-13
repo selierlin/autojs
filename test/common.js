@@ -1,6 +1,7 @@
 
 var common = {};
-
+var musiceVolume = 0;
+var brightness = 0;
 /**
  * 关闭应用
  * @param {string} packageName  应用包名
@@ -95,6 +96,29 @@ common.getFormatTime = function (date, fmt) {
         }
     }
     return fmt;
+}
+
+
+common.startQuietModel = function () {
+    try {
+        log("开启静默模式")
+        musiceVolume = device.getMusicVolume()
+        brightness = device.getBrightness()
+        device.setMusicVolume(0)
+        device.setBrightness(100)
+    } finally {
+        toast("请允许修改系统设置后，继续运行脚本")
+    }
+}
+
+common.exitQuietModel = function () {
+    try {
+        log("退出静默模式")
+        device.setMusicVolume(musiceVolume)
+        device.setBrightness(brightness)
+    } finally {
+        toast("请允许修改系统设置后，继续运行脚本")
+    }
 }
 
 module.exports = common;
