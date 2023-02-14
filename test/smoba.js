@@ -22,6 +22,7 @@ try {
     notify.sendPushPlus("王者营地任务失败❌")
 } finally {
     exit()
+    common.killApp('王者营地')
 }
 
 
@@ -29,6 +30,10 @@ function openApp() {
     log("正在打开王者营地...");
     app.launch("com.tencent.gamehelper.smoba")
     log("等待10秒,待app完全启动")
+    let access = text('允许').findOne(1000)
+    if (access) {
+        access.click()
+    }
     sleep(10000)
 }
 

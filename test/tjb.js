@@ -24,6 +24,31 @@ try {
     common.startQuietModel()
     openApp(APP)
     closeAd()
+    // 获取淘宝账号数量
+    let accountNum = getAccountSize()
+    if (accountNum <= 0) {
+        exit()
+    }
+    for (let i = 0; i < accountNum; i++) {
+        if (i == 0) {
+            
+        }else{
+            switchAccount()
+        }
+        sleep(findTime)
+        // doTask()
+    }
+} catch (ex) {
+    log(ex)
+} finally {
+    console.hide()
+    // common.killApp(NAME)
+    console.show()
+    common.exitQuietModel()
+    // notify.autoSendMessage(NAME, allMessage)
+    console.info("任务结束🔚")
+}
+function doTask() {
     openActivity()
     getTodayReward()
     openTask()
@@ -32,15 +57,6 @@ try {
     receiveTaskReward()
     doPuke()
     doCash()
-} catch (ex) {
-    log(ex)
-} finally {
-    console.hide()
-    common.killApp(NAME)
-    console.show()
-    common.exitQuietModel()
-    // notify.autoSendMessage(NAME, allMessage)
-    console.info("任务结束🔚")
 }
 
 
@@ -52,7 +68,7 @@ function openApp(appName) {
     console.info("打开", appName)
     app.launchApp(a.appName)
     log("等待(8秒)程序启动加载完成")
-    let access = text('允许').findOne(findTime)
+    let access = text('允许').findOne(waitTime)
     if (access) {
         access.click()
     }
@@ -63,7 +79,7 @@ function openApp(appName) {
 
 function closeAd() {
     log("查找广告弹窗")
-    let a = className("android.widget.ImageView").clickable(true).depth(10).desc("浮层关闭按钮").drawingOrder(2).findOne(findTime)
+    let a = className("android.widget.ImageView").clickable(true).depth(10).desc("浮层关闭按钮").drawingOrder(2).findOne(waitTime)
     if (a) {
         log("关闭广告弹窗")
         a.click()
@@ -76,7 +92,6 @@ function closeAd() {
 
 function openActivity() {
     console.hide()
-    sleep(waitTime)
     let a = text("领淘金币").findOne(findTime)
     if (a) {
         log("打开领淘金币页面")
@@ -134,7 +149,7 @@ function doTaskList() {
             log(taskName, getCold)
             if (taskName.indexOf("领取淘金币礼包") > -1) {
                 receiveGift(todoButton)
-            } else if (taskName.indexOf("去看淘金币省了多少钱") > -1) {
+            } else if (taskName.indexOf("去看淘金币省了多少钱") > -1 || taskName.indexOf("查看淘宝月消费账单") > -1) {
                 saveHowMoney(todoButton)
             } else if (taskName.indexOf("免费为好友送淘金币") > -1) {
                 sendGold(todoButton)
@@ -152,7 +167,8 @@ function doTaskList() {
                 continue;
             } else if (taskName.indexOf("去淘宝斗地主玩1局") > -1) {
                 todoButton.click()
-                sleep(5000)
+                log("等待开始(10秒)...")
+                sleep(10000)
                 puke()
             } else if (taskName.indexOf("逛大牌") > -1) {
                 bigName(todoButton)
@@ -163,8 +179,9 @@ function doTaskList() {
 
 function bigName(todoButton) {
     todoButton.click()
-    sleep("等待中(18秒)...")
+    log("等待中(18秒)...")
     sleep(18000)
+    console.info("逛大牌完成")
     back()
     sleep(findTime)
 }
@@ -177,10 +194,8 @@ function puke() {
     let a = text("昵称").findOne(3 * 60 * 000)
     if (a) {
         log("牌局结束，点击返回")
-
         let left = className("android.view.View").depth(12).drawingOrder(0).clickable(true).indexInParent(0).findOne(findTime)
         left.click()
-        sleep(waitTime)
         let leave = text("离开").findOne(findTime)
         if (leave) {
             leave.click()
@@ -218,11 +233,12 @@ function puke() {
 
 function searchStore(todoButton) {
     todoButton.click()
-    sleep(findTime)
-    let keyword = className("android.view.View").depth(11).drawingOrder(9).clickable(true).indexInParent(8).findOne(findTime)
+    let keyword = textContains("趋势热搜").findOne(findTime)
     if (keyword) {
-        log("搜索宝贝：", keyword.desc())
-        keyword.click()
+        log(123)
+        let key = keyword.parent().child(1).child(0).child(1)
+        log("搜索宝贝：", key.text())
+        key.click()
         log("浏览18秒中")
         sleep(18000)
         console.info("你想要的商品", "完成")
@@ -237,7 +253,9 @@ function viewStore(todoButton) {
     todoButton.click()
     console.hide()
     sleep(waitTime)
-    swipe(device.width / 2, device.height - 300, device.width / 2, device.height / 4, 300)
+    swipe(device.width / 2, device.height - 100, device.width / 2, device.height / 4, 100)
+    sleep(500)
+    swipe(device.width / 2, device.height - 100, device.width / 2, device.height / 4, 100)
     for (let i = 0; i < 12; i++) {
         //   这里改为上下滑动
         swipe(device.width / 2, device.height / 2, device.width / 2, device.height / 4, 300)
@@ -302,7 +320,6 @@ function receiveTaskReward() {
         let a = text('立即领取').findOne(waitTime)
         if (a) {
             a.click()
-            sleep(waitTime)
         } else {
             break;
         }
@@ -311,16 +328,15 @@ function receiveTaskReward() {
 }
 
 function doPuke() {
-    if (isSign) {
-        return
-    }
+    // if (isSign) {
+    //     return
+    // }
     log("打开斗地主")
     let a = textStartsWith("斗地主").findOne(findTime)
     if (!a) {
         return
     }
     a.click()
-    sleep(5000)
     log("点击升级可得100钻")
     let level = text("升级可得100钻").findOne(findTime)
     if (!level) {
@@ -334,11 +350,10 @@ function doPuke() {
     if (!join) {
         throw "未找到经典模式"
     }
-
     click(join.bounds().centerX(), join.bounds().centerY())
     sleep(findTime)
-
     puke()
+    console.info("斗地主完成")
 }
 
 function doCash() {
@@ -346,8 +361,8 @@ function doCash() {
     if (!a) {
         return
     }
-    log("领现金")
     a.click()
+    console.info("领现金完成")
     sleep(findTime)
     back()
 }
@@ -363,4 +378,47 @@ function sendGold(todoButton) {
     }
     back()
     sleep(findTime)
+}
+
+function openAccountList() {
+    try {
+        let my = desc("我的淘宝").findOne(findTime)
+        if (my) {
+            my.click()
+            log("打开设置")
+            let setting = desc("设置").clickable(true).findOne(findTime)
+            setting.click()
+            log("切换账号")
+            let change = text("切换账号").clickable(true).findOne(findTime)
+            change.click()
+        }
+    } catch (ex) {
+        throw '打开设置失败'
+    }
+}
+
+function getAccountSize() {
+    openAccountList()
+    let current = text("当前登录").findOne(findTime)
+    let accountList = current.parent().parent().children()
+    console.info("共有", accountList.length, "个账号")
+    console.info("当前账号", current.parent().child(1).text())
+    log("返回首页")
+    sleep(waitTime)
+    back()
+    sleep(waitTime)
+    back()
+    let home = desc("首页").findOne(findTime)
+    home.click()
+    return accountList.length
+}
+
+function switchAccount() {
+    openAccountList()
+    let current = text("当前登录").findOne(findTime)
+    let accountListView = current.parent().parent()
+    let child = accountListView.child(accountListView.children().length - 1)
+    console.info("切换账号", child.child(1).text())
+    child.click()
+
 }

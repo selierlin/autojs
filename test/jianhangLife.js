@@ -28,9 +28,11 @@ function doLife(name, index) {
 function openApp(index) {
     log("正在打开...");
     app.launch(APP)
-    sleep(3000)
-    click(index, 1930)
-    log("等待8秒,待app完全启动")
+    // sleep(1000)
+    // click(index, 1930)
+    // let a = text("建行生活").boundsInside(device.width / 2, 0, device.width, device.height).findOne(3000)
+    // click(a.parent().bounds().centerX(),a.parent().bounds().centerY())
+    // log("等待8秒,待app完全启动")
     sleep(8000)
 }
 

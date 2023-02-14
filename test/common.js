@@ -15,6 +15,9 @@ common.killAppByRoot = function killAppByRoot(packageName) {
  * @param {string} name 应用名称
  */
 common.killApp = function (name) {
+    sleep(500)
+    home()
+    sleep(1000)
     recents();// 进入任务窗口
     var appObj = desc(name + ",未加锁").findOne(1000)
     if (appObj != null) {

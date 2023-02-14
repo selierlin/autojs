@@ -26,24 +26,23 @@ var unlockIfNeed = function (pwd) {
     // 是否需要解锁手机
     if (!hasUnlock()) {
         setLog("已是解锁状态");
-        home()
-        return;
-    }
-    if (!isLock()) {
-        setLog("未设置解锁密码 直接上滑");
-        swipeUp();
-        setLog("解锁成功");
     } else {
-        setLog("有解锁密码");
-        swipeUp();
-        
-        if (pwd) {
-            enterPwd(pwd);
+        if (!isLock()) {
+            setLog("未设置解锁密码 直接上滑");
+            swipeUp();
+            setLog("解锁成功");
         } else {
-            setLog("请配置手机解锁密码");
-            exit();
+            setLog("有解锁密码");
+            swipeUp();
+
+            if (pwd) {
+                enterPwd(pwd);
+            } else {
+                setLog("请配置手机解锁密码");
+                exit();
+            }
+            setLog("解锁完毕");
         }
-        setLog("解锁完毕");
     }
     home()
     sleep(1000);
